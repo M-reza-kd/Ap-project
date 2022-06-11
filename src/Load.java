@@ -3,12 +3,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Load {
         
-        public static Map loadLastGame() throws IOException {
+        public static void loadLastGame() throws IOException {
                 int[][] board = new int[8][8];
                 File file = new File("source.txt");
                 Scanner input = new Scanner(file);
@@ -36,8 +35,9 @@ public class Load {
                                 System.out.printf("%d " , board[i][j]);
                         System.out.println();
                 }
-                
-                return new Map(board, whiteChessman, blackChessman, whosTurn);
+
+                Game game = new Game(new Map(board, whiteChessman, blackChessman, whosTurn), type);
+                game.run();
         }
         
         public static void save(int[][] board, String whosTurn, String type) throws FileNotFoundException {

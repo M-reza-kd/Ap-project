@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainPage {
@@ -18,48 +16,35 @@ public class MainPage {
                 JButton HumanVsComputer = new JButton("Computer");
                 JButton exit = new JButton("EXIT");
         
-                ActionListener HumanVsHumanActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                try {
-                                        HvsH.Start();
-                                        mainFrame.setVisible(false);
-                                } catch (IOException ex) {
-                                        throw new RuntimeException(ex);
-                                }
-                        }
-                };
-                
-                ActionListener HumanVsComputerActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                try {
-                                        SelectColor.run();
-                                } catch (IOException ex) {
-                                        throw new RuntimeException(ex);
-                                }
+                ActionListener HumanVsHumanActionListener = e -> {
+                        try {
+                                Game game = new Game("Both");
+                                game.run();
                                 mainFrame.setVisible(false);
+                        } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                         }
                 };
                 
-                ActionListener load = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                try {
-                                        Load.loadLastGame();
-                                } catch (IOException ex) {
-                                        throw new RuntimeException(ex);
-                                }
-                                mainFrame.setVisible(false);
+                ActionListener HumanVsComputerActionListener = e -> {
+                        try {
+                                SelectColor.run();
+                        } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                         }
+                        mainFrame.setVisible(false);
                 };
                 
-                ActionListener exitActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                System.exit(0);
+                ActionListener load = e -> {
+                        try {
+                                Load.loadLastGame();
+                        } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                         }
-                } ;
+                        mainFrame.setVisible(false);
+                };
+                
+                ActionListener exitActionListener = e -> System.exit(0);
         
                 JLabel mainPic = new JLabel(new ImageIcon("mainPic.png"));
                 mainPanel.add(mainPic);

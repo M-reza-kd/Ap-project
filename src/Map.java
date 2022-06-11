@@ -16,12 +16,7 @@ public class Map extends JComponent {
         JPanel buttonPanel = new JPanel();
         JPanel WHOSTURNE = new JPanel(new BorderLayout());
         JLabel turn, wl, bl;
-        Point src, des;
         JButton [][] mapButton;
-        String typeOfGame;
-        String robotColor;
-        ActionListener mainActionListener;
-        
         JPanel panel = new JPanel(new GridLayout(8,8));
         Font font;
         static final Color WHITE = new Color(243, 198, 89);
@@ -31,7 +26,6 @@ public class Map extends JComponent {
         private void preProcessOfMap(){
                 
                 this.setBounds(100,0, 900,800);
-                des = src = null;
                 WHOSTURNE.setBounds(0,0,885,80);
                 WHOSTURNE.setBackground(new Color(248, 218, 159));
                 WHOSTURNE.setLayout(null);
@@ -45,9 +39,9 @@ public class Map extends JComponent {
                 WHOSTURNE.add(bl);
                 WHOSTURNE.add(wl);
                 WHOSTURNE.revalidate();
-                bl.setFont(new Font(Font.SANS_SERIF, 1, 20));
-                wl.setFont(new Font(Font.SANS_SERIF, 1, 20));
-                font = new Font("SansSerif", 3, 50);
+                bl.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+                wl.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+                font = new Font("SansSerif", Font.BOLD | Font.ITALIC, 50);
                 turn.setFont(font);
                 this.setLayout(null);
                 this.add(whiteOut);
@@ -58,40 +52,7 @@ public class Map extends JComponent {
                 this.add(blackOut);
                 this.add(WHOSTURNE);
                 mapButton = new JButton[8][8];
-                JButton exit = new JButton("Exit");
-                JButton save = new JButton("Save");
-                JButton ok = new JButton("Ok");
-                ActionListener exitActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                System.exit(0);
-                        }
-                };
-                exit.addActionListener(exitActionListener);
-                ActionListener saveActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                try {
-                                        Load.save(board, turn.getText(), typeOfGame);
-                                } catch (FileNotFoundException ex) {
-                                        throw new RuntimeException(ex);
-                                }
-                        }
-                };
-                ActionListener okActionListener = new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                move();
-                        }
-                };
                 buttonPanel = new JPanel();
-                save.addActionListener(saveActionListener);
-                exit.setBounds(175,30,75,40);
-                ok.setBounds(200, 30, 25, 40);
-                save.setBounds(350,30,75,40);
-                buttonPanel.add(save);
-                buttonPanel.add(exit);
-                buttonPanel.add(ok);
                 buttonPanel.setLayout(null);
                 buttonPanel.setBounds(140,680,600,100);
                 buttonPanel.setBackground(new Color(248, 218, 159));
@@ -110,52 +71,6 @@ public class Map extends JComponent {
                 this.add(panel);
                 buttonPanel.revalidate();
                 this.revalidate();
-                mainActionListener = e -> {
-                        JButton b = (JButton) e.getSource();
-                        Point X = new Point();
-                        for(int i = 0; i < 8; i++)
-                                for(int j = 0; j < 8; j++)
-                                        if(mapButton[i][j] == b){
-                                                X.setLocation(i,j);
-                                                break;
-                                        }
-                        if(src == null && !turn.getText().equals(map[X.x][X.y].getColor()))
-                                return;
-                        if(src == null  && (typeOfGame.equals("Black") && map[X.x][X.y].getColor().equals("White")))
-                                return;
-                        if(src == null  && (typeOfGame.equals("White") && map[X.x][X.y].getColor().equals("Black")))
-                                return;
-                        b.setBackground(new Color(72, 83, 155));
-                        if(src != null && src.equals(X)) {
-                                src = null;
-                                mainColor();
-                                return;
-                        }
-                        if(src == null) {
-                                src = new Point(X);
-                                for(int i = 0; i < 8 ; i++)
-                                        for(int j = 0; j < 8 ; j++)
-                                                if(!src.equals(new Point(i,j)) && map[src.x][src.y].validMove(i , j, Map.this))
-                                                        mapButton[i][j].setBackground(new Color(13, 136, 73, 169));
-                        }
-                        else if(des != null){
-                                if(des.x % 2 == des.y % 2)
-                                        mapButton[des.x][des.y].setBackground(WHITE);
-                                else
-                                        mapButton[des.x][des.y].setBackground(BLACK);
-                                des.setLocation(X);
-                        }
-                        else
-                                des = new Point(X);
-                        if(des != null && src != null){
-                                if(des.equals(src) || !map[src.x][src.y].validMove(des.x, des.y, Map.this))
-                                        throw new IllegalArgumentException("Destination is not valid");
-                                else
-                                        move();
-                        }
-                
-                };
-                addActionListenerToChessman();
         }
         
         public Map(int[][] board, int[] whiteChessman, int[] blackChessman, String whosTurn) throws IOException {
@@ -208,7 +123,6 @@ public class Map extends JComponent {
         
         public Map() throws IOException {
                 preProcessOfMap();
-                typeOfGame = "Both";
                 for(int j = 0 ; j < 8 ; j++){
                         this.map[1][j] = new Pawn("Black", 1, j);
                         this.mapButton[1][j].add(this.map[1][j]);
@@ -286,70 +200,23 @@ public class Map extends JComponent {
                 this.revalidate();
         }
         
-        public void calRobot(){
-                if(!typeOfGame.equals("Both"))
-                        if(!typeOfGame.equals("White"))
-                                robotColor = "White";
-                        else
-                                robotColor = "Black";
-        }
+
         
-        public void addActionListenerToChessman(){
-                for(int i = 0 ; i < 8; i++)
-                        for(int j = 0 ; j < 8; j++)
-                                mapButton[i][j].addActionListener(mainActionListener);
-        }
+
         
         public String getChessmanColor(int x, int y) {
                 return map[x][y].getColor();
         }
         
-        public void move(){
-                System.out.println(src + " " + des);
-                if(map[des.x][des.y] != null) {
-                        if (map[des.x][des.y].getColor().equals("Black"))
-                                blackOut.add(map[des.x][des.y]);
-                        else
-                                whiteOut.add(map[des.x][des.y]);
-                        this.revalidate();
-                        if(map[des.x][des.y] != null && map[des.x][des.y].name.equals("King")){
-                                JLabel jt = new JLabel();
-                                jt.setText(map[des.x][des.y].getColor() + " LOSE...");
-                                jt.setFont(font);
-                                jt.setBounds(140,80,600,600);
-                                panel.setVisible(false);
-                                MainPage.mainFrame.setVisible(true);
-                                this.add(jt);
-                        }
-                        map[des.x][des.y] = null;
-                }
-                map[des.x][des.y] = map[src.x][src.y];
-                map[src.x][src.y] = null;
-                mapButton[des.x][des.y].add(map[des.x][des.y]);
-                map[des.x][des.y].setLoc(des.x, des.y);
-                board[des.x][des.y] = board[src.x][src.y];
-                board[src.x][src.y] = 0;
-                mainColor();
-                des = src = null;
-                changeTurn();
-                if(!typeOfGame.equals("Both") && !turn.getText().equals(typeOfGame))
-                        AIPlayer.nextMove(this, getBoard(), robotColor.equals("White"));
-        }
+
         
-        private void mainColor(){
+        public void mainColor(){
                 for(int i = 0; i < 8; i++)
                         for(int j = 0; j < 8; j++)
                                 if(i % 2 == j % 2)
                                         mapButton[i][j].setBackground(WHITE);
                                 else
                                         mapButton[i][j].setBackground(BLACK);
-        }
-        
-        public void changeTurn(){
-                if(turn.getText().equals("Black"))
-                        turn.setText("White");
-                else
-                        turn.setText("Black");
         }
         
         public int[][] getBoard(){
