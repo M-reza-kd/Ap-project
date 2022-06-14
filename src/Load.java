@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Load {
         
-        public static void loadLastGame() throws IOException {
+        public static void loadLastGame() throws IOException, InterruptedException {
                 int[][] board = new int[8][8];
                 File file = new File("source.txt");
                 Scanner input = new Scanner(file);

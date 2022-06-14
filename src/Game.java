@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Game {
 
@@ -10,7 +11,6 @@ public class Game {
         Map Board;
 
         String typeOfGame;
-        String robotColor;
         Point src, des;
         static ActionListener mainActionListener;
 
@@ -31,16 +31,22 @@ public class Game {
                         Point X = new Point();
                         for(int i = 0; i < 8; i++)
                                 for(int j = 0; j < 8; j++)
-                                        if(Board.mapButton[i][j] == b){
+                                        if(Board.mapButton[i][j].equals(b)){
                                                 X.setLocation(i,j);
                                                 break;
                                         }
-                        if(src == null && !Board.turn.getText().equals(Board.map[X.x][X.y].getColor()))
+                        if(src == null && !Board.turn.getText().equals(Board.map[X.x][X.y].getColor())) {
+                                System.out.println("First if");
                                 return;
-                        if(src == null  && (typeOfGame.equals("Black") && Board.map[X.x][X.y].getColor().equals("White")))
+                        }
+                        /*if(src == null  && (typeOfGame.equals("Black") && Board.map[X.x][X.y].getColor().equals("White"))){
+                                System.out.println("Second if");
                                 return;
-                        if(src == null  && (typeOfGame.equals("White") && Board.map[X.x][X.y].getColor().equals("Black")))
+                        }
+                        if(src == null  && (typeOfGame.equals("White") && Board.map[X.x][X.y].getColor().equals("Black"))){
+                                System.out.println("Third if");
                                 return;
+                        }*/
                         b.setBackground(new Color(72, 83, 155));
                         if(src != null && src.equals(X)) {
                                 src = null;
@@ -66,14 +72,21 @@ public class Game {
                         if(des != null && src != null){
                                 if(des.equals(src) || !Board.map[src.x][src.y].validMove(des.x, des.y, Board))
                                         throw new IllegalArgumentException("Destination is not valid");
-                                else
-                                        HMPlayer.nextMove(this);
+                                else {
+                                        try {
+                                                HMPlayer.nextMove(this);
+                                        } catch (InterruptedException ex) {
+                                                throw new RuntimeException(ex);
+                                        }
+                                }
                         }
 
                 };
-                for(int i = 0 ; i < 8; i++)
-                        for(int j = 0 ; j < 8; j++)
+                for(int i = 0 ; i < 8; i++) {
+                        for (int j = 0; j < 8; j++) {
                                 Board.mapButton[i][j].addActionListener(mainActionListener);
+                        }
+                }
 
                 JButton exit = new JButton("Exit");
                 JButton save = new JButton("Save");
@@ -93,7 +106,7 @@ public class Game {
                 Board.buttonPanel.add(exit);
         }
 
-        public void move(){
+        public void move() throws InterruptedException {
                 System.out.println(src + " " + des);
                 if(Board.map[des.x][des.y] != null) {
                         if (Board.map[des.x][des.y].getColor().equals("Black"))
@@ -115,32 +128,42 @@ public class Game {
                 Board.map[des.x][des.y] = Board.map[src.x][src.y];
                 Board.map[src.x][src.y] = null;
                 Board.mapButton[des.x][des.y].add(Board.map[des.x][des.y]);
+                Board.mapButton[des.x][des.y].repaint();
+                Board.mapButton[src.x][src.y].repaint();
                 Board.map[des.x][des.y].setLoc(des.x, des.y);
                 Board.board[des.x][des.y] = Board.board[src.x][src.y];
                 Board.board[src.x][src.y] = 0;
                 Board.mainColor();
                 des = src = null;
                 changeTurn();
-                if(!typeOfGame.equals("Both") && Board.turn.getText().equals(typeOfGame))
-                        AIPlayer.nextMove(this, Board.getBoard(), robotColor.equals("White"));
+                frame.revalidate();
         }
 
-        public void changeTurn(){
+        public void changeTurn() throws InterruptedException {
                 if(Board.turn.getText().equals("Black"))
                         Board.turn.setText("White");
                 else
                         Board.turn.setText("Black");
+                if(Board.turn.getText().equals(typeOfGame)) {
+                        //Thread.sleep(1000);
+                        AIPlayer.nextMove(this, Board.getBoard(), typeOfGame.equals("White"));
+                }
+                frame.revalidate();
+                Board.revalidate();
+                Board.panel.revalidate();
         }
 
-        public void run(){
+        public void run() throws InterruptedException {
+                frame = new JFrame();
                 frame.setVisible(true);
                 frame.setBounds(100,0,900,800);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.add(Board);
                 frame.repaint();
                 frame.revalidate();
-                if(typeOfGame.equals("White"))
-                        AIPlayer.nextMove(this, Board.getBoard(), true);
+                if(Board.turn.getText().equals(typeOfGame)) {
+                        AIPlayer.nextMove(this, Board.getBoard(), typeOfGame.equals("White"));
+                }
         }
 
 

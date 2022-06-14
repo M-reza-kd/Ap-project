@@ -21,7 +21,7 @@ public class MainPage {
                                 Game game = new Game("Both");
                                 game.run();
                                 mainFrame.setVisible(false);
-                        } catch (IOException ex) {
+                        } catch (IOException | InterruptedException ex) {
                                 throw new RuntimeException(ex);
                         }
                 };
@@ -38,7 +38,7 @@ public class MainPage {
                 ActionListener load = e -> {
                         try {
                                 Load.loadLastGame();
-                        } catch (IOException ex) {
+                        } catch (IOException | InterruptedException ex) {
                                 throw new RuntimeException(ex);
                         }
                         mainFrame.setVisible(false);

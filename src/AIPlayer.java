@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class AIPlayer{
 
-        public static void nextMove(Game game, int[][] chess, boolean white) {
+        public static void nextMove(Game game, int[][] chess, boolean white) throws InterruptedException {
                 MiniMax.MiniMaxState miniMaxState = MiniMax.miniMax(chess, white, 4);
                 int[][] newChess = miniMaxState.getChess();
                 for(int i = 0 ; i < 8; i++){
@@ -13,6 +13,7 @@ public class AIPlayer{
                                         game.des = new Point(i , j);
                         }
                 }
+                System.out.println(game.src + " + " + game.des);
                 game.move();
         }
 
