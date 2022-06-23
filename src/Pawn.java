@@ -10,16 +10,15 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 
 public class Pawn extends CHEsMAN{
-        
-        public Pawn(String color, int x, int y) throws IOException {
+        public Pawn(String color, int x, int y) {
                 this.color = color;
                 this.setLoc(x, y);
                 name = "Pawn";
-                JLabel j = new JLabel(new ImageIcon("PawnWhite.png"));
+                image = new JLabel(new ImageIcon("PawnWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("PawnBlack.png"));
+                        image = new JLabel(new ImageIcon("PawnBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override

@@ -4,16 +4,15 @@ import java.awt.*;
 import static java.lang.Math.abs;
 
 public class King extends CHEsMAN{
-        
         public King(String color, int x, int y){
                 this.color = color;
                 this.setLoc(x, y);
                 name = "King";
-                JLabel j = new JLabel(new ImageIcon("KingWhite.png"));
+                image = new JLabel(new ImageIcon("KingWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("KingBlack.png"));
+                        image = new JLabel(new ImageIcon("KingBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override

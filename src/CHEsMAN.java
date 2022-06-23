@@ -5,7 +5,7 @@ abstract public class CHEsMAN extends JComponent {
         
         Point loc = new Point();
         String color;
-        
+        JLabel image;
         String name = "";
 
         abstract public Boolean validMove(int x, int y, Map board);

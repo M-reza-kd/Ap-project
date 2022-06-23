@@ -125,8 +125,10 @@ public class Game {
                         }
                         Board.map[des.x][des.y] = null;
                 }
-                Board.map[des.x][des.y] = Board.map[src.x][src.y];
-                Board.map[src.x][src.y] = null;
+                CHEsMAN temp = Board.map[src.x][src.y];
+                Board.map[des.x][des.y] = null;
+                Animation.play(Board, src, des, Board.map[src.x][src.y]);
+                Board.map[des.x][des.y] = temp;
                 Board.mapButton[des.x][des.y].add(Board.map[des.x][des.y]);
                 Board.mapButton[des.x][des.y].repaint();
                 Board.mapButton[src.x][src.y].repaint();

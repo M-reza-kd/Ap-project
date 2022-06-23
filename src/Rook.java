@@ -8,11 +8,11 @@ public class Rook extends CHEsMAN{
                 this.color = color;
                 name = "Rook";
                 this.setLoc(x, y);
-                JLabel j = new JLabel(new ImageIcon("RookWhite.png"));
+                image = new JLabel(new ImageIcon("RookWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("RookBlack.png"));
+                        image = new JLabel(new ImageIcon("RookBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override

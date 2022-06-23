@@ -5,16 +5,16 @@ import java.awt.*;
 import static java.lang.Math.abs;
 
 public class Knight extends CHEsMAN{
-        
+
         public Knight(String color, int x, int y){
                 this.setLoc(x, y);
                 this.color = color;
                 name = "Knight";
-                JLabel j = new JLabel(new ImageIcon("KnightWhite.png"));
+                image = new JLabel(new ImageIcon("KnightWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("KnightBlack.png"));
+                        image = new JLabel(new ImageIcon("KnightBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override

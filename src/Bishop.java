@@ -5,16 +5,15 @@ import java.awt.*;
 import static java.lang.Math.abs;
 
 public class Bishop extends CHEsMAN{
-        
         public Bishop(String color, int x, int y){
                 this.setLoc(x, y);
                 this.color = color;
                 name = "Bishop";
-                JLabel j = new JLabel(new ImageIcon("BishopWhite.png"));
+                image = new JLabel(new ImageIcon("BishopWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("BishopBlack.png"));
+                        image = new JLabel(new ImageIcon("BishopBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override

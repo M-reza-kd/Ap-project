@@ -2,16 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Queen extends CHEsMAN{
-        
         public Queen(String color, int x, int y){
                 this.setLoc(x, y);
                 this.color = color;
                 name = "Queen";
-                JLabel j = new JLabel(new ImageIcon("QueenWhite.png"));
+                image = new JLabel(new ImageIcon("QueenWhite.png"));
                 if(color.equals("Black"))
-                        j = new JLabel(new ImageIcon("QueenBlack.png"));
+                        image = new JLabel(new ImageIcon("QueenBlack.png"));
                 this.setLayout(new BorderLayout());
-                this.add(j);
+                this.add(image);
         }
         
         @Override
