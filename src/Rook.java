@@ -4,6 +4,12 @@ import java.awt.*;
 import static java.lang.Math.abs;
 
 public class Rook extends CHEsMAN{
+        /**
+         * constructor of the bishop piece
+         * @param color color of the piece
+         * @param x x of the loc
+         * @param y y of the loc
+         */
         public Rook(String color, int x, int y){
                 this.color = color;
                 name = "Rook";

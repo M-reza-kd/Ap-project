@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Queen extends CHEsMAN{
+        /**
+         * constructor of the bishop piece
+         * @param color color of the piece
+         * @param x x of the loc
+         * @param y y of the loc
+         */
         public Queen(String color, int x, int y){
                 this.setLoc(x, y);
                 this.color = color;

@@ -4,9 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
-
 public class Load {
-        
+        /**
+         * load the last game that we save
+         */
         public static void loadLastGame() throws IOException, InterruptedException {
                 int[][] board = new int[8][8];
                 File file = new File("source.txt");
@@ -39,7 +40,13 @@ public class Load {
                 Game game = new Game(new Map(board, whiteChessman, blackChessman, whosTurn), type);
                 game.run();
         }
-        
+
+        /**
+         * saving the game
+         * @param board detail of pieces location
+         * @param whosTurn showing who`s turn
+         * @param type type of the game that we want to save
+         */
         public static void save(int[][] board, String whosTurn, String type) throws FileNotFoundException {
                 File file = new File("source.txt");
                 PrintStream output = new PrintStream(file);

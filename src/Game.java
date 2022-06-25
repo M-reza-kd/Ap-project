@@ -3,28 +3,38 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class Game {
-
         JFrame frame;
         Map Board;
-
         String typeOfGame;
         Point src, des;
         static ActionListener mainActionListener;
 
+        /**
+         * constructor of the new game
+         * @param type type of game
+         */
         public Game(String type) throws IOException {
                 typeOfGame = type;
                 Board = new Map();
                 addActionListenerToChessman();
         }
 
+        /**
+         * constructor of the saved game
+         * @param m map of the game that we are making its game
+         * @param type type of the game
+         */
         public Game(Map m, String type){
                 typeOfGame = type;
                 Board = m;
                 addActionListenerToChessman();
         }
+
+        /**
+         * adding action listener to the chessman
+         */
         public void addActionListenerToChessman(){
                 mainActionListener = e -> {
                         JButton b = (JButton) e.getSource();
@@ -39,14 +49,6 @@ public class Game {
                                 System.out.println("First if");
                                 return;
                         }
-                        /*if(src == null  && (typeOfGame.equals("Black") && Board.map[X.x][X.y].getColor().equals("White"))){
-                                System.out.println("Second if");
-                                return;
-                        }
-                        if(src == null  && (typeOfGame.equals("White") && Board.map[X.x][X.y].getColor().equals("Black"))){
-                                System.out.println("Third if");
-                                return;
-                        }*/
                         b.setBackground(new Color(72, 83, 155));
                         if(src != null && src.equals(X)) {
                                 src = null;
@@ -106,6 +108,9 @@ public class Game {
                 Board.buttonPanel.add(exit);
         }
 
+        /**
+         * moving the pieces and check if someone won or not
+         */
         public void move() throws InterruptedException {
                 System.out.println(src + " " + des);
                 if(Board.map[des.x][des.y] != null) {
@@ -141,13 +146,15 @@ public class Game {
                 frame.revalidate();
         }
 
+        /**
+         * changing the player turn and make the move if is robot turn
+         */
         public void changeTurn() throws InterruptedException {
                 if(Board.turn.getText().equals("Black"))
                         Board.turn.setText("White");
                 else
                         Board.turn.setText("Black");
                 if(Board.turn.getText().equals(typeOfGame)) {
-                        //Thread.sleep(1000);
                         AIPlayer.nextMove(this, Board.getBoard(), typeOfGame.equals("White"));
                 }
                 frame.revalidate();
@@ -155,6 +162,9 @@ public class Game {
                 Board.panel.revalidate();
         }
 
+        /**
+         * running the created game
+         */
         public void run() throws InterruptedException {
                 frame = new JFrame();
                 frame.setVisible(true);

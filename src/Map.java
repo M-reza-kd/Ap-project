@@ -9,7 +9,6 @@ import static java.lang.Math.abs;
 
 public class Map extends JComponent {
         CHEsMAN[][] map = new CHEsMAN[8][8];
-        int cnt = 0;
         int[][] board = new int[8][8];
         JPanel blackOut = new JPanel(new GridLayout(8, 2));
         JPanel whiteOut = new JPanel(new GridLayout(8, 2));
@@ -23,6 +22,9 @@ public class Map extends JComponent {
         static final Color BLACK = new Color(114, 67, 56);
         static final int[] cntChessman = {0, 1, 1, 2, 2, 2, 8};
 
+        /**
+         * setting the text, bounds and other relevant thing to the graphic of game
+         */
         private void preProcessOfMap() {
 
                 this.setBounds(100, 0, 900, 800);
@@ -73,6 +75,13 @@ public class Map extends JComponent {
                 this.revalidate();
         }
 
+        /**
+         * constructor of making the graphic of the game from specific status
+         * @param board detail of pieces location
+         * @param whiteChessman the number of pieces of each type of white piece
+         * @param blackChessman the number of pieces of each type of black piece
+         * @param whosTurn showing who` turn to make the move
+         */
         public Map(int[][] board, int[] whiteChessman, int[] blackChessman, String whosTurn) throws IOException {
                 turn = new JLabel(whosTurn);
                 this.board = board;
@@ -123,6 +132,9 @@ public class Map extends JComponent {
                 }
         }
 
+        /**
+         * constructor of making the graphic of the game from the beginning
+         */
         public Map() throws IOException {
                 preProcessOfMap();
                 for (int j = 0; j < 8; j++) {
@@ -201,13 +213,13 @@ public class Map extends JComponent {
                 }
                 this.revalidate();
         }
-
-
         public String getChessmanColor(int x, int y) {
                 return map[x][y].getColor();
         }
 
-
+        /**
+         * painting the board
+         */
         public void mainColor() {
                 for (int i = 0; i < 8; i++)
                         for (int j = 0; j < 8; j++)
@@ -216,7 +228,6 @@ public class Map extends JComponent {
                                 else
                                         mapButton[i][j].setBackground(BLACK);
         }
-
         public int[][] getBoard() {
                 return board;
         }

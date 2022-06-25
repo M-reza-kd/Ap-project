@@ -5,6 +5,12 @@ import java.awt.*;
 import static java.lang.Math.abs;
 
 public class Bishop extends CHEsMAN{
+        /**
+         * constructor of the bishop piece
+         * @param color color of the piece
+         * @param x x of the loc
+         * @param y y of the loc
+         */
         public Bishop(String color, int x, int y){
                 this.setLoc(x, y);
                 this.color = color;
@@ -15,12 +21,12 @@ public class Bishop extends CHEsMAN{
                 this.setLayout(new BorderLayout());
                 this.add(image);
         }
-        
+
+
         @Override
         public Boolean validMove(int x, int y, Map board) {
                 int dx = (int) abs(x - this.loc.getX()), dy = (int) abs(y - this.loc.getY());
                 if(dx != dy) {
-                        //System.out.println(loc.x + " " + loc.y + " " + x + " " + y);
                         return false;
                 }
         
