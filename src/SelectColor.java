@@ -37,6 +37,7 @@ public class SelectColor {
                                 System.out.println(e.getActionCommand());
                                 Game game = new Game(e.getActionCommand());
                                 game.run();
+                                frame.setVisible(false);
                         } catch (IOException | InterruptedException ex) {
                                 throw new RuntimeException(ex);
                         }
